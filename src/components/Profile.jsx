@@ -50,7 +50,7 @@ const Profile = () => {
                                     Settings
                                  </li>
                             </ul>
-                            <button className=" mt-48 bg-red-600 text-lg text-white p-2 w-[120px] hover:bg-red-700 cursor-pointer rounded-3xl">Logout</button>
+                            <butto className=" mt-48 bg-red-600 text-lg text-white p-2 w-[120px] hover:bg-red-700 cursor-pointer rounded-3xl">Logout</button>
                         </div>
                         {/* <button className=" mb-10 bg-red-600 text-lg text-white p-2 w-[150px] hover:bg-red-700 cursor-pointer rounded-3xl mr-[-2]">Logout</button> */}
                     </div>
