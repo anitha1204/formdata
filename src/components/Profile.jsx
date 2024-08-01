@@ -30,33 +30,30 @@ const Profile = () => {
     ];
     return (
         <>
-            <section id="sidebar" className="fixed top-0 left-0 w-64 h-full  z-2000 font-lato transition-transform transform duration-300 ease-in-out overflow-x-hidden">
-                <div className="brand text-2xl font-bold h-14 flex items-center text-blue-500 sticky top-0 left-0  z-500 pb-5 box-content">
-
-                    <img src={logo} alt="" className='ml-12 w-[150px] h-18 mt-10' />
-                </div>
-                <div className="flex flex-1">
-                    <div className="flex flex-col border-r border-red-600 ml-20 h-[600px] mt-4 p-4">
-                        <div className="flex-grow ">
-                            <ul className="flex flex-col space-y-10 mt-16 items-center">
-                                <li className="text-center text-red-500 text-lg md:text-2xl font-semibold cursor-pointer relative group">
-                                    Profile
-                                    {/* <span className="block h-1 bg-red-500 absolute left-0 bottom-0 w-0 group-hover:w-full transition-all duration-300 rounded-3xl"></span> */}
-                                </li>
-                                <li className="text-center text-red-500 text-lg md:text-2xl font-semibold cursor-pointer relative group">
-                                    Connect
-                                </li>
-                                <li className="text-center text-red-500 text-lg md:text-2xl font-semibold cursor-pointer relative group">
-                                    Settings
-                                 </li>
-                            </ul>
-                            <button className=" mt-48 bg-red-600 text-lg text-white p-2 w-[120px] hover:bg-red-700 cursor-pointer rounded-3xl">Logout</button>
-                        </div>
-                        {/* <button className=" mb-10 bg-red-600 text-lg text-white p-2 w-[150px] hover:bg-red-700 cursor-pointer rounded-3xl mr-[-2]">Logout</button> */}
-                    </div>
-                    
-                </div>
-             </section>
+            <section className="fixed top-0 left-0 w-64 h-full z-2000 font-lato transition-transform transform duration-300 ease-in-out overflow-x-hidden flex flex-col">
+        <div className="brand text-2xl font-bold h-14 flex items-center text-blue-500 mt-10 mb-5 justify-center">
+          <img src={logo} alt="" className="w-[150px] h-18" />
+        </div>
+        <div className="flex flex-col items-center flex-grow border-r border-red-600">
+          <ul className="flex flex-col space-y-10 mt-16 items-center">
+            <li className="text-center text-red-500 text-lg md:text-2xl font-semibold cursor-pointer relative group">
+              Profile
+            </li>
+            <li className="text-center text-red-500 text-lg md:text-2xl font-semibold cursor-pointer relative group">
+              Connect
+            </li>
+            <li className="text-center text-red-500 text-lg md:text-2xl font-semibold cursor-pointer relative group">
+              Settings
+            </li>
+          </ul>
+          <div className="flex flex-grow"></div>{" "}
+          <div className="mb-20">
+            <button className="bg-red-600 text-lg text-white p-2 hover:bg-red-700 cursor-pointer rounded-3xl w-[130px]">
+              Logout
+            </button>
+          </div>
+        </div>
+      </section>
 
              <div className="flex-1 space-y-8 mt-24 mx-4 ml-80">
                 {data.map((item, index) => (

@@ -21,7 +21,7 @@ const CompanyForm = () => {
             </li>
           </ul>
           <div className="flex flex-grow"></div>{" "}
-          <div className="mb-10">
+          <div className="mb-20">
             <button className="bg-red-600 text-lg text-white p-2 hover:bg-red-700 cursor-pointer rounded-3xl w-[130px]">
               Logout
             </button>
