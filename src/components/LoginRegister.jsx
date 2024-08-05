@@ -30,7 +30,7 @@ const LoginRegister = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', loginData);
+      const response = await axios.post('https://formdata1.onrender.com/api/auth/login', loginData);
       if (response && response.data) {
         console.log('Login successful:', response.data);
         toast.success('Login successful');
@@ -50,7 +50,7 @@ const LoginRegister = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await axios.post('https://formdata1.onrender.com/api/auth/register', {
         username: registerData.username,
         email: registerData.email,
         password: registerData.password
@@ -69,7 +69,7 @@ const LoginRegister = () => {
   const handleForgotPasswordSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/forgot-password', { email: forgotPasswordEmail });
+      const response = await axios.post('https://formdata1.onrender.com/api/auth/forgot-password', { email: forgotPasswordEmail });
       if (response && response.data) {
         console.log('Password reset email sent:', response.data);
         toast.success('Password reset email sent');
@@ -86,7 +86,7 @@ const LoginRegister = () => {
   const handleResetPasswordSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/reset-password', resetPasswordData);
+      const response = await axios.post('https://formdata1.onrender.com/api/auth/reset-password', resetPasswordData);
       if (response && response.data) {
         console.log('Password reset successful:', response.data);
         toast.success('Password reset successful');
