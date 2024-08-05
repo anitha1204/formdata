@@ -1,10 +1,107 @@
 
-import React from 'react';
+  
+
+import React, { useState } from 'react';
+import axios from 'axios';
 import 'tailwindcss/tailwind.css';
 import logo from '../assets/Group 12.png';
-import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginRegister = () => {
+  const [loginData, setLoginData] = useState({ usernameOrEmail: '', password: '' });
+  const [registerData, setRegisterData] = useState({ username: '', email: '', password: '', confirmPassword: '' });
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
+  const [resetPasswordData, setResetPasswordData] = useState({ token: '', newPassword: '' });
+
+  const handleLoginChange = (e) => {
+    setLoginData({ ...loginData, [e.target.name.trim()]: e.target.value });
+  };
+
+  const handleRegisterChange = (e) => {
+    setRegisterData({ ...registerData, [e.target.name.trim()]: e.target.value });
+  };
+
+  const handleForgotPasswordChange = (e) => {
+    setForgotPasswordEmail(e.target.value);
+  };
+
+  const handleResetPasswordChange = (e) => {
+    setResetPasswordData({ ...resetPasswordData, [e.target.name]: e.target.value });
+  };
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', loginData);
+      if (response && response.data) {
+        console.log('Login successful:', response.data);
+        toast.success('Login successful');
+        localStorage.setItem('token', response.data.token);
+        setLoginData({ usernameOrEmail: '', password: '' });
+      }
+    } catch (error) {
+      console.error('Error during login:', error.response?.data);
+      toast.error('Login failed: ' + (error.response?.data?.msg || 'An error occurred'));
+    }
+  };
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    if (registerData.password !== registerData.confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/register', {
+        username: registerData.username,
+        email: registerData.email,
+        password: registerData.password
+      });
+      if (response && response.data) {
+        console.log('Registration successful:', response.data);
+        toast.success('Registration successful');
+        setRegisterData({ username: '', email: '', password: '', confirmPassword: '' });
+      }
+    } catch (error) {
+      console.error('Error during registration:', error.response?.data);
+      toast.error('Registration failed: ' + (error.response?.data?.msg || 'An error occurred'));
+    }
+  };
+
+  const handleForgotPasswordSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/forgot-password', { email: forgotPasswordEmail });
+      if (response && response.data) {
+        console.log('Password reset email sent:', response.data);
+        toast.success('Password reset email sent');
+        setForgotPasswordEmail('');
+        document.getElementById('forgot-password-modal').style.display = 'none';
+        document.getElementById('reset-password-form').style.display = 'block';
+      }
+    } catch (error) {
+      console.error('Error during password reset request:', error.response?.data);
+      toast.error('Error: ' + (error.response?.data?.msg || 'An error occurred'));
+    }
+  };
+
+  const handleResetPasswordSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/reset-password', resetPasswordData);
+      if (response && response.data) {
+        console.log('Password reset successful:', response.data);
+        toast.success('Password reset successful');
+        setResetPasswordData({ token: '', newPassword: '' });
+        document.getElementById('reset-password-form').style.display = 'none';
+      }
+    } catch (error) {
+      console.error('Error during password reset:', error.response?.data);
+      toast.error('Error: ' + (error.response?.data?.msg || 'An error occurred'));
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col items-center justify-center min-h-screen bg-white shadow-md rounded-lg p-4 md:p-8">
@@ -17,59 +114,120 @@ const LoginRegister = () => {
             <h2 className="text-center text-red-500 text-lg md:text-xl mb-4 font-semibold">Members login</h2>
             <input
               type="text"
-              placeholder="Username"
+              name="usernameOrEmail"
+              placeholder="Username or Email"
               className="border-b mb-4 p-4 w-full md:w-3/4 outline-none text-center"
+              value={loginData.usernameOrEmail}
+              onChange={handleLoginChange}
             />
             <input
               type="password"
+              name="password"
               placeholder="Password"
               className="border-b mb-4 p-4 w-full md:w-3/4 outline-none text-center"
+              value={loginData.password}
+              onChange={handleLoginChange}
             />
-            <button className="bg-red-600 text-white py-2 px-4 rounded-2xl hover:bg-red-700 w-full md:w-3/4">
+            <button onClick={handleLoginSubmit} className="bg-red-600 text-white py-2 px-4 rounded-2xl hover:bg-red-700 w-full md:w-3/4">
               Submit
             </button>
-            <a href="#" className="text-sm font-semibold mt-4">
+            <button onClick={() => document.getElementById('forgot-password-modal').style.display = 'block'} className="mt-4 text-red-600 hover:underline">
               Forgot Password?
-            </a>
+            </button>
           </div>
-
-          {/* Vertical line */}
-          <div className="border-t md:border-l border-gray-300 md:border-t-0"></div>
-
-          {/* Right side - Register as Member */}
+          
+          {/* Right side - Register as member */}
           <div className="flex flex-col items-center justify-center p-6 md:p-10 w-full md:w-1/2">
-            <h2 className="text-center text-red-500 text-lg md:text-xl mb-4 font-semibold">Register as Member</h2>
+            <h2 className="text-center text-red-500 text-lg md:text-xl mb-4 font-semibold">Register as member</h2>
             <input
               type="text"
+              name="username"
               placeholder="Username"
               className="border-b mb-4 p-4 w-full md:w-3/4 outline-none text-center"
+              value={registerData.username}
+              onChange={handleRegisterChange}
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              className="border-b mb-4 p-4 w-full md:w-3/4 outline-none text-center"
+              value={registerData.email}
+              onChange={handleRegisterChange}
             />
             <input
               type="password"
+              name="password"
               placeholder="Password"
               className="border-b mb-4 p-4 w-full md:w-3/4 outline-none text-center"
+              value={registerData.password}
+              onChange={handleRegisterChange}
             />
             <input
               type="password"
-              placeholder="Change Password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
               className="border-b mb-4 p-4 w-full md:w-3/4 outline-none text-center"
+              value={registerData.confirmPassword}
+              onChange={handleRegisterChange}
             />
-            <button className="bg-red-600 text-white py-2 px-4 rounded-2xl hover:bg-red-700 w-full md:w-3/4">
-              Submit
+            <button onClick={handleRegisterSubmit} className="bg-red-600 text-white py-2 px-4 rounded-2xl hover:bg-red-700 w-full md:w-3/4">
+              Register
             </button>
-            <a href="#" className="text-sm font-semibold mt-4">
-              Forgot Password?
-            </a>
           </div>
         </div>
-        <div className="flex justify-center sm:justify-start md:justify-center lg:justify-end xl:justify-end 2xl:justify-end w-full mt-10 md:mt-20">
-          <Link to="/companyform">
-            <button className="bg-red-600 text-white py-2 px-4 hover:bg-red-700">
-              Next
-            </button>
-          </Link>
+      </div>
+
+      {/* Forgot Password Modal */}
+      <div id="forgot-password-modal" className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 " style={{ display: 'none' }}>
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm  items-center justify-center">
+          <h2 className="text-red-500 text-lg font-semibold mb-4">Forgot Password</h2>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            className="border-b mb-4 p-4 w-full outline-none text-center"
+            value={forgotPasswordEmail}
+            onChange={handleForgotPasswordChange}
+          />
+          <button onClick={handleForgotPasswordSubmit} className="bg-red-600 text-white py-2 px-4 rounded-2xl hover:bg-red-700 w-full">
+            Send Reset Email
+          </button>
+          <button onClick={() => document.getElementById('forgot-password-modal').style.display = 'none'} className="mt-4 text-red-600 hover:underline">
+            Close
+          </button>
         </div>
       </div>
+
+      {/* Reset Password Form */}
+      <div id="reset-password-form" className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 " style={{ display: 'none' }}>
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+          <h2 className="text-red-500 text-lg font-semibold mb-4">Reset Password</h2>
+          <input
+            type="text"
+            name="token"
+            placeholder="Reset Token"
+            className="border-b mb-4 p-4 w-full outline-none text-center"
+            value={resetPasswordData.token}
+            onChange={handleResetPasswordChange}
+          />
+          <input
+            type="password"
+            name="newPassword"
+            placeholder="New Password"
+            className="border-b mb-4 p-4 w-full outline-none text-center"
+            value={resetPasswordData.newPassword}
+            onChange={handleResetPasswordChange}
+          />
+          <button onClick={handleResetPasswordSubmit} className="bg-red-600 text-white py-2 px-4 rounded-2xl hover:bg-red-700 w-full">
+            Reset Password
+          </button>
+          <button onClick={() => document.getElementById('reset-password-form').style.display = 'none'} className="mt-4 text-red-600 hover:underline">
+            Close
+          </button>
+        </div>
+      </div>
+
+      <ToastContainer />
     </>
   );
 };
