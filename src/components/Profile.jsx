@@ -53,7 +53,9 @@ const Profile = () => {
             </button>
           </div>
         </div>
+        
       </section>
+      {/* <div className="border border-red-500"></div> */}
 
              <div className="flex-1 space-y-8 mt-24 mx-4 ml-80">
                 {data.map((item, index) => (

@@ -132,6 +132,10 @@ const LoginRegister = () => {
               Forgot Password?
             </button>
           </div>
+
+           {/* Vertical line */}
+           <div className="border-t md:border-l border-gray-300 md:border-t-0"></div>
+
           
           {/* Right side - Register as member */}
           <div className="flex flex-col items-center justify-center p-6 md:p-10 w-full md:w-1/2">
