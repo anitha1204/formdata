@@ -8,7 +8,7 @@ import { MdDelete } from 'react-icons/md';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const  Membership = () => {
+const Membership = () => {
     const [activeButton, setActiveButton] = useState('MCCI Membership');
     const [showModal, setShowModal] = useState(false);
     const [editingItem, setEditingItem] = useState(null);
@@ -39,7 +39,7 @@ const  Membership = () => {
         });
         setShowModal(true); // Open the modal or form for editing
     };
-    
+
     const [formData, setFormData] = useState({
         companyName: '',
         address: '',
@@ -92,7 +92,7 @@ const  Membership = () => {
             toast.warn('Please fill in all required fields.');
             return;
         }
-    
+
         try {
             if (editingItem) {
                 console.log('Editing item ID:', editingItem._id); // Check if the ID is correct
@@ -103,7 +103,7 @@ const  Membership = () => {
                 // Create new entry
                 const response = await axios.post('https://formdata1.onrender.com/api/form/companies', formData);
                 setData([...data, response.data]); // Update table with new data
-                
+
             }
             setShowModal(false); // Close modal
             setFormData({
@@ -143,20 +143,20 @@ const  Membership = () => {
             }
         }
     };
-    
-   
+
+
     const handleDelete = (id) => {
         axios.delete(`https://formdata1.onrender.com/api/form/companies/${id}`)
             .then(() => {
                 setData(data.filter(item => item._id !== id));
                 toast.info('Entry deleted successfully.', {
-            
+
                 });
             })
             .catch(error => {
                 console.error("There was an error deleting the entry!", error);
                 toast.error('There was an error deleting the entry. Please try again.', {
-                    
+
                 });
             });
     };
@@ -214,18 +214,18 @@ const  Membership = () => {
                                         <td className="py-3 px-6 border-b text-left whitespace-nowrap">{item.email}</td>
                                         <td className="py-3 px-6 border-b text-left whitespace-nowrap">{item.website}</td>
                                         <td className="py-3 px-6 border-b text-left whitespace-nowrap">{item.natureOfCompany}</td>
-                                       
+
                                         <td className="py-3 border-b text-red-500 cursor-pointer hover:underline whitespace-nowrap flex items-center gap-4">
-    <span className='lg:ml-4'>Create Access</span>
-    <FiEdit
-        className="text-gray-600 cursor-pointer hover:text-red-600"
-        onClick={() => handleEdit(item)}
-    />
-    <MdDelete
-        className="text-gray-600 cursor-pointer hover:text-red-600"
-        onClick={() => handleDelete(item._id)}
-    />
-</td>
+                                            <span className='lg:ml-4'>Create Access</span>
+                                            <FiEdit
+                                                className="text-gray-600 cursor-pointer hover:text-red-600"
+                                                onClick={() => handleEdit(item)}
+                                            />
+                                            <MdDelete
+                                                className="text-gray-600 cursor-pointer hover:text-red-600"
+                                                onClick={() => handleDelete(item._id)}
+                                            />
+                                        </td>
 
                                     </tr>
                                 ))}
@@ -462,7 +462,7 @@ const  Membership = () => {
                     </div>
                 </div>
             )}
-             <ToastContainer />
+            <ToastContainer />
         </div>
     );
 };
